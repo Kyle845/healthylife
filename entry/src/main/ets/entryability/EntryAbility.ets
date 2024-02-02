@@ -1,9 +1,22 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import { CommonConstants as Const } from '../common/constants/CommonConstants';
+import {
+  columnDayInfoList,
+  columnGlobalInfoList,
+  columnTaskInfoInfoList,
+  columnFormInfoList
+} from '../model/RdbColumnModel';
+import RdbUtils from '../common/database/rdb/RdbUtils';
+
 
 export default class EntryAbility extends UIAbility {
+
+  private static TAG: string = 'EntryAbility';
+
   onCreate(want, launchParam) {
+    GlobalContext.
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 
