@@ -68,7 +68,25 @@ export class RdbHelperImp implements RdbHelper {
       if (values instanceof Array) {
         Logger.info(`insert values isArray = ${values.length}`);
         this.rdbStore.beginTransaction();
-        this.sa
+        this.saveArray(tableName, values).then(data => {
+          Logger.info(`insert success, data : ${JSON.stringify(data)}`);
+          success(data);
+          this.rdbStore.commit();
+        }).catch((err: Error) => {
+          Logger.error(`insert failed, err : ${err}`);
+          error(err);
+          this.rdbStore.commit();
+        })
+      } else {
+        this.rdbStore.insert(tableName, values).then(data => {
+          Logger.info(`insert success id : ${data}`);
+          success(data);
+          this.rdbStore.commit();
+        }).catch((err: Error) => {
+          Logger.error(`insert failed, err : ${JSON.stringify(err)}`);
+          error(err);
+          this.rdbStore.commit();
+        })
       }
     })
   }
@@ -100,12 +118,11 @@ export class RdbHelperImp implements RdbHelper {
 
   private saveData(tableName: string, values: Array<dataRdb.ValuesBucket>, index: number, callback: Function): void {
     Logger.info(`saveData tableName : ${tableName}, index : ${JSON.stringify(index)}`);
-    this.rdbStore.insert(tableName, values[index]).then((dara: number) => {
+    this.rdbStore.insert(tableName, values[index]).then((data: number) => {
       Logger.info(`saveData success id : ${data}`);
       callback(data);
     }).catch((err: Error) => {
       Logger.error(`saveData failed. err : ${err}`);
-      callback(err);
       callback(err);
     })
   }
@@ -126,7 +143,7 @@ export class RdbHelperImp implements RdbHelper {
 
   queryBySql(sql: string, bindArgs?: Array<dataRdb.ValueType>): Promise<dataRdb.ResultSet> {
     Logger.info(`queryBySql sql : ${sql}`);
-    return
+    return this.rdbStore.querySql(sql, bindArgs);
   }
 
   delete(rdbPredicates: dataRdb.RdbPredicates): Promise<number> {

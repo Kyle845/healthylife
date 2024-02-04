@@ -96,7 +96,4 @@ struct SplashIndex {
     .backgroundImage($r('app.media.ic_splash_bg'))
     .backgroundImageSize({width: '100%', height: '100%'})
   }
-
-
-
 }
