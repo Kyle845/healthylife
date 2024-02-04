@@ -118,4 +118,19 @@ export class RdbHelperImp implements RdbHelper {
     Logger.info(`query rdbPredicates : ${JSON.stringify(rdbPredicates)}`);
     return this.rdbStore.query(rdbPredicates, columns);
   }
+
+  queryAll(tableName: string): Promise<dataRdb.ResultSet> {
+    Logger.info(`queryAllSize tableName : ${tableName}`);
+    return this.rdbStore.querySql(`select * from ${tableName}`);
+  }
+
+  queryBySql(sql: string, bindArgs?: Array<dataRdb.ValueType>): Promise<dataRdb.ResultSet> {
+    Logger.info(`queryBySql sql : ${sql}`);
+    return
+  }
+
+  delete(rdbPredicates: dataRdb.RdbPredicates): Promise<number> {
+    Logger.info(`delete rdbPredicates : ${JSON.stringify(rdbPredicates)}`);
+    return this.rdbStore.delete(rdbPredicates);
+  }
 }
