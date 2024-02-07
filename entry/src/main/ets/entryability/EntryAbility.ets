@@ -5,7 +5,7 @@ import { CommonConstants as Const } from '../common/constants/CommonConstants';
 import {
   columnDayInfoList,
   columnGlobalInfoList,
-  columnTaskInfoInfoList,
+  columnTaskInfoList,
   columnFormInfoList
 } from '../model/RdbColumnModel';
 import RdbUtils from '../common/database/rdb/RdbUtils';
@@ -19,9 +19,33 @@ export default class EntryAbility extends UIAbility {
 
   private static TAG: string = 'EntryAbility';
 
-  onCreate(want, launchParam) {
-    GlobalContext.
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+  async onCreate(want, launchParam) {
+    GlobalContext.getContext().setObject('want', want);
+    GlobalContext.getContext().setObject('launchParam', launchParam);
+    RdbUtils.initDb(this.context, Const.RDB_NAME.dbName ? Const.RDB_NAME.dbName : '');
+    await RdbUtils.createDb();
+    RdbUtils.createTable(Const.DAY_INFO.tableName ? Const.DAY_INFO.tableName : '', columnDayInfoList).then(() => {
+      Logger.info(`RdbHelper createTable dayInfo success`);
+    }).catch((err: Error) => {
+      Logger.error(`RdbHelper dayInfo err : ${JSON.stringify(err)}`);
+    });
+
+    RdbUtils.createTable(Const.GLOBAL_INFO.tableName ? Const.GLOBAL_INFO.tableName : '', columnGlobalInfoList).then(() => {
+      Logger.info(`RdbHelper createTable globalInfo success`);
+    }).catch((err: Error) => {
+      Logger.error(`RdbHelper globalInfo err : ${JSON.stringify(err)}`);
+    });
+
+    RdbUtils.createTable(Const.TASK_INFO.tableName ? Const.TASK_INFO.tableName : '', columnTaskInfoList).then(() => {
+      Logger.info(`RdbHelper createTable taskInfo success`);
+    }).catch((err: Error) => {
+      Logger.error(`RdbHelper taskInfo err : ${JSON.stringify(err)}`);
+    });
+
+    RdbUtils.createTable(Const.FORM_INFO.tableName ? Const.FORM_INFO.tableName : '', columnFormInfoList)
+      .catch((err: Error) => {
+        Logger.error(`RdbHelper formInfo err : ${JSON.stringify(err)}`);
+      });
   }
 
   onDestroy() {
@@ -29,16 +53,19 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
-    // Main window is created, set main page for this ability
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
-
-    windowStage.loadContent('pages/Index', (err, data) => {
+    GlobalContext.getContext().setObject('isForeground', true);
+    windowStage.loadContent('pages/SplashPage', (err, data) => {
       if (err.code) {
-        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
+        Logger.error('windowStage', 'Failed to load the content. Cause: ' + JSON.stringify(err));
         return;
       }
-      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
+      Logger.info('windowStage', 'Succeeded in loading the content. Data: ' + JSON.stringify(data));
     });
+  }
+
+  onForeground() {
+    GlobalContext.getContext().setObject('isForeground', true);
+    GlobalContext.getContext().setObject('taskListChange', false);
   }
 
   onWindowStageDestroy() {
@@ -46,13 +73,12 @@ export default class EntryAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
   }
 
-  onForeground() {
-    // Ability has brought to foreground
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');
+  onBackground() {
+    FormUtils.backgroundUpdateCard(GlobalContext.getContext().getObject('taskListChange') as boolean);
   }
 
-  onBackground() {
-    // Ability has back to background
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
+  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam) {
+    GlobalContext.getContext().setObject('abilityWant', want);
+    GlobalContext.getContext().setObject('launchParam', launchParam);
   }
 }

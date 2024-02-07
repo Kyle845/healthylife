@@ -15,7 +15,7 @@ export const columnDayInfoList: Array<ColumnInfo> = [
   new ColumnInfo('finTaskNum', 'integer', -1, true, false, false)
 ];
 
-export const columnTaskInfoInfoList: Array<ColumnInfo> = [
+export const columnTaskInfoList: Array<ColumnInfo> = [
   new ColumnInfo('id', 'integer', -1, false, true, true),
   new ColumnInfo('date', 'TEXT', -1, false, false, false),
   new ColumnInfo('taskID', 'integer', -1, false, false, false),
