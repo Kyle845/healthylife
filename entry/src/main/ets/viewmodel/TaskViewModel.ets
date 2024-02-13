@@ -117,3 +117,49 @@ export const taskIndexDataInit = (taskInitList: ITaskItem[], taskInfoData: TaskI
   });
   return afterInitData;
 }
+
+export const formatParams = (params: ITaskItem) => {
+  return JSON.stringify(params);
+}
+
+export const initFrequencyString = (frequencyIdCollection: string) => {
+  if (frequencyIdCollection === '') {
+    return Const.EVERYDAY;
+  }
+  const frequencyIdArray: Array<number> = frequencyIdCollection.split(',').map(item => Number(item) - 1);
+  const length = frequencyIdArray.length;
+  if (length === 7) {
+    return Const.EVERYDAY;
+  }
+  const frequencyString = frequencyIdArray.reduce((pre, current) => {
+    return pre + ' ' + oneWeek[current];
+  }, '')
+  return frequencyString;
+}
+
+export function returnTimeStamp(currentTime: string) {
+  const timeString = `${new Date().toDateString()} ${currentTime}`;
+  return new Date(timeString).getTime();
+}
+
+export const formatTime = (value: TimePickerResult) => {
+  let hour = value?.hour ? value?.hour : 8;
+  let minute = value?.minute ? value?.minute : 0;
+  return `${padTo2Digits(hour)}: ${padTo2Digits(minute)}`;
+}
+
+export const createDrinkRange = () => {
+  const drinkRangeArr: Array<string> = []
+  for (let i = Const.DRINK_STEP; i <= Const.DRINK_MAX_RANGE; i += Const.DRINK_STEP) {
+    drinkRangeArr.push(`${i / Const.TIMES_100} L`);
+  }
+  return drinkRangeArr;
+}
+
+export const createAppleRange = () => {
+  const appleRangeArr: Array<string> = [];
+  for (let i = 1; i <= Const.EAT_APPLE_RANGE; i++) {
+    appleRangeArr.push(`${i} 个`);
+  }
+  return appleRangeArr;
+}
