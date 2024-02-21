@@ -58,9 +58,22 @@ export default struct TaskDetail {
         GlobalContext.getContext().setObject('taskListChange', true);
         router.back({
           url: 'pages/MainPage',
+          params: {
+            editTask: this.backIndexParams(),
+          }
         })
+        Logger.info('addTaskFinished', JSON.stringify(res));
+      }).catch((error: Error) => {
+        prompt.showToast({
+          message: Const.SETTING_FINISH_FAILED_MESSAGE
+        })
+        Logger.error('addTaskFailed', JSON.stringify(error))
       })
+      return;
     }
+    router.back({
+      url: 'pages/MainPage',
+    })
   }
 
   aboutToAppear() {
@@ -105,6 +118,15 @@ export default struct TaskDetail {
           .enabled(this.settingParams?.isOpen && this.settingParams?.isAlarm)
           .onClick(() => {
             this.broadCast.emit(BroadCastType.SHOW_REMIND_TIME_DIALOG);
+          })
+
+          ListItem() {
+            FrequencyItem()
+          }
+          .listItemStyle()
+          .enabled(this.settingParams?.isOpen && this.settingParams?.isAlarm)
+          .onClick(() => {
+            this.broadCast.emit(BroadCastType.SHOW_FREQUENCY_DIALOG);
           })
         }
         .width(Const.THOUSANDTH_940)

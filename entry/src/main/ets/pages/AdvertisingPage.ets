@@ -57,9 +57,9 @@ struct AdvertisingPage {
             .fontFamily($r('app.string.HarmonyHeiTi'))
             .fontColor($r('app.color.titleColor'))
             .fontWeight(Const.FONT_WEIGHT_400)
-            .letterSpacing(Const.FONT_WEIGHT_400)
+            .letterSpacing(Const.LETTER_34)
             .opacity(Const.OPACITY_4)
-            .fontSize($r('app.float.default_12'))
+            .fontSize($r('app.float.default_16'))
         }
         .alignItems(HorizontalAlign.Start)
         .margin({ left: $r('app.float.default_12')})

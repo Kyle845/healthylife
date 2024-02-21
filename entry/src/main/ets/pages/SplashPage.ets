@@ -17,13 +17,19 @@ struct SplashIndex {
   dialogController: CustomDialogController = new CustomDialogController({
     builder: UserPrivacyDialog(
       {
-        cancel: () => { this.exitApp()},
-        confirm: () => {this.onConfirm()}
+        cancel: () => {
+          this.exitApp()
+        },
+        confirm: () => {
+          this.onConfirm()
+        }
       }),
-    cancel: () => { this.exitApp() },
+    cancel: () => {
+      this.exitApp()
+    },
     autoCancel: false,
     alignment: DialogAlignment.Bottom,
-    offset: {dx: 0, dy: Const.OFFSET_24}
+    offset: { dx: 0, dy: Const.OFFSET_24 }
   });
 
   onConfirm() {
@@ -72,7 +78,7 @@ struct SplashIndex {
         .width($r('app.float.default_120'))
         .aspectRatio(1)
         .margin({top: $r('app.float.default_120')});
-      Text($r('app.string.EntryFormAbility_label'))
+      Text($r('app.string.EntryAbility_label'))
         .fontFamily($r('app.string.HarmonyHeiTi_Bold'))
         .fontSize($r('app.float.default_24'))
         .fontColor($r('app.color.titleColor'))
@@ -83,7 +89,6 @@ struct SplashIndex {
           bottom: $r('app.float.default_8') })
       Text($r('app.string.EntryAbility_desc'))
         .fontFamily($r('app.string.HarmonyHeiTi'))
-        .fontSize($r('app.float.default_16'))
         .fontColor($r('app.color.titleColor'))
         .fontWeight(Const.FONT_WEIGHT_400)
         .letterSpacing(Const.LETTER_34)
