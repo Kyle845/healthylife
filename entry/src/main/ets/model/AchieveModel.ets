@@ -18,7 +18,7 @@ export function getAchievementLevel() {
 }
 
 export function isReachNewAchievement(globalInfo: GlobalInfo): boolean {
-  let achievementStr = GlobalInfo.achievements??'';
+  let achievementStr = globalInfo.achievements??'';
   let achievements = achievementStr.split(',');
 
   if (ACHIEVEMENT_LEVEL_LIST.indexOf(globalInfo.checkInDays) >= 0 && achievements.indexOf(String(globalInfo.checkInDays)) < 0) {

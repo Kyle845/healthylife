@@ -10,7 +10,7 @@ import FormInfo from '../../viewmodel/FormInfo';
 import Logger from '../utils/Logger';
 import ProgressCardInfo from '../../viewmodel/ProgressCardInfo';
 import TaskInfo, { taskType } from '../../viewmodel/TaskInfo';
-import { columnDayInfoList, columnTaskInfoInfoList, columnFormInfoList } from '../../model/RdbColumnModel';
+import { columnDayInfoList, columnTaskInfoList, columnFormInfoList } from '../../model/RdbColumnModel';
 import {
   CommonConstants as Const,
   Unit,
@@ -87,7 +87,7 @@ class FormUtils {
     if ((formInfo.formName === Const.WIDGET_NAME_AGENCY) &&
     (formInfo.formDimension === Const.DEFAULT_DIMENSION_2X4)) {
       let createPromise = RdbUtils.isCreateTable(Const.TASK_INFO.tableName ?
-      Const.TASK_INFO.tableName : '', columnTaskInfoInfoList);
+      Const.TASK_INFO.tableName : '', columnTaskInfoList);
       createPromise.then((result: boolean) => {
         if (!result) {
           Logger.error(Const.TAG, 'taskInfo table create error');

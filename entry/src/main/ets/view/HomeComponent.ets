@@ -105,7 +105,7 @@ export default struct HomeIndex {
         Column() {
           HomeTopView({ homeStore: $homeStore })
           Text($r('app.string.task_list')).titleTextStyle()
-          if (this.homeStore, getTaskListOfDay().length > 0) {
+          if (this.homeStore.getTaskListOfDay().length > 0) {
             Column({ space: Const.DEFAULT_8 }) {
               ForEach(this.homeStore.getTaskListOfDay(), (item: TaskInfo) => {
                 TaskCard({
